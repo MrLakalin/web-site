@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Генератор паролей</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Генератор паролей</h1>
+    <p>Вы вошли как: <b>{{ user }}</b> | <a href="{{ url_for('logout') }}">Выйти</a></p>
+
+    <form method="post">
+        <label>Длина пароля:</label>
+        <input type="number" name="length" value="12" required><br><br>
+
+        <label>Количество паролей:</label>
+        <input type="number" name="count" value="1" required><br><br>
+
+        <label>Сложность:</label>
+        <select name="complexity">
+            <option value="low">Простой</option>
+            <option value="medium">Средний</option>
+            <option value="high">Сложный</option>
+            <option value="max">Максимум</option>
+        </select><br><br>
+
+        <button type="submit">Сгенерировать</button>
+    </form>
+
+    {% if passwords %}
+        <h2>Результат:</h2>
+        <ul>
+            {% for p in passwords %}
+                <li><code>{{ p }}</code></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
