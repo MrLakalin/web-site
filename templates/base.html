@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Рисунок онлайн{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Comfortaa:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="bg-ornaments" aria-hidden="true">
+        <span class="blob blob-1"></span>
+        <span class="blob blob-2"></span>
+        <span class="blob blob-3"></span>
+    </div>
+    <header class="site-header">
+        <div class="container header-content">
+            <a href="{{ url_for('index') }}" class="logo">Рисовальня</a>
+            <nav class="nav-links">
+                <a href="{{ url_for('studio') }}">Студия</a>
+                <a href="{{ url_for('profile') }}">Профиль</a>
+                {% if session.get('user_id') %}
+                    <span class="greeting">Привет, {{ session.get('username') }}!</span>
+                    <a class="btn btn-secondary" href="{{ url_for('logout') }}">Выход</a>
+                {% else %}
+                    <a class="btn" href="{{ url_for('login') }}">Войти</a>
+                    <a class="btn btn-secondary" href="{{ url_for('register') }}">Регистрация</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-wrapper">
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>© {{ current_year|default(2025) }} Рисовальня · Создавайте и делитесь вдохновением</p>
+        </div>
+    </footer>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
+

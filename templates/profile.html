@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Профиль{% endblock %}
+
+{% block content %}
+<section class="profile-header">
+    <div>
+        <h2>Ваши рисунки</h2>
+        <p>Все работы сохраняются автоматически и доступны только вам.</p>
+    </div>
+    <a class="btn btn-primary" href="{{ url_for('studio') }}">Новый рисунок</a>
+</section>
+
+{% if drawings %}
+    <section class="gallery-grid">
+        {% for drawing in drawings %}
+            <article class="gallery-card">
+                <img src="{{ drawing.image_data }}" alt="{{ drawing.title }}">
+                <div class="card-body">
+                    <h3>{{ drawing.title }}</h3>
+                    <p>{{ drawing.created_at|local_dt }}</p>
+                    <div class="card-actions">
+                        <a class="btn btn-secondary" href="{{ url_for('studio', drawing_id=drawing.id) }}">Редактировать</a>
+                        <button class="btn btn-danger" data-action="delete" data-id="{{ drawing.id }}">Удалить</button>
+                    </div>
+                </div>
+            </article>
+        {% endfor %}
+    </section>
+{% else %}
+    <div class="empty-state">
+        <p>Пока нет сохранённых рисунков. Создайте первый шедевр!</p>
+        <a class="btn btn-secondary" href="{{ url_for('studio') }}">Начать рисовать</a>
+    </div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.querySelectorAll('[data-action="delete"]').forEach((button) => {
+    button.addEventListener("click", async () => {
+        if (!confirm("Удалить рисунок безвозвратно?")) return;
+        const drawingId = button.dataset.id;
+        button.disabled = true;
+        try {
+            const response = await fetch(`/api/drawings/${drawingId}`, { method: "DELETE" });
+            if (!response.ok) throw new Error("Не удалось удалить");
+            location.reload();
+        } catch (error) {
+            console.error(error);
+            alert("Ошибка удаления рисунка.");
+        } finally {
+            button.disabled = false;
+        }
+    });
+});
+</script>
+{% endblock %}
+

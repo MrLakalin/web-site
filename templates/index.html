@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Онлайн-студия{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-text">
+        <h1>Рисуйте в браузере и сохраняйте шедевры</h1>
+        <p>Простая студия для цифрового творчества с личным профилем и коллекцией рисунков.</p>
+        {% if session.get('user_id') %}
+            <a class="btn btn-primary" href="{{ url_for('studio') }}">Перейти в студию</a>
+        {% else %}
+            <a class="btn btn-primary" href="{{ url_for('register') }}">Начать бесплатно</a>
+            <a class="btn btn-secondary" href="{{ url_for('login') }}">У меня есть аккаунт</a>
+        {% endif %}
+    </div>
+    <div class="hero-card">
+        <h3>Что доступно?</h3>
+        <ul>
+            <li>Настраиваемая кисть и цвета</li>
+            <li>Мгновенное сохранение рисунков</li>
+            <li>Личная галерея в профиле</li>
+        </ul>
+    </div>
+</section>
+{% endblock %}
+

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+<section class="auth-card">
+    <h2>Создать аккаунт</h2>
+    <form method="post" class="form-grid">
+        <label for="username">Имя пользователя</label>
+        <input id="username" name="username" required minlength="3">
+
+        <label for="password">Пароль</label>
+        <input type="password" id="password" name="password" required minlength="6">
+
+        <label for="password_confirm">Повторите пароль</label>
+        <input type="password" id="password_confirm" name="password_confirm" required minlength="6">
+
+        <button class="btn btn-primary" type="submit">Зарегистрироваться</button>
+    </form>
+    <p class="auth-switch">
+        Уже есть аккаунт?
+        <a href="{{ url_for('login') }}">Войти</a>
+    </p>
+</section>
+{% endblock %}
+
